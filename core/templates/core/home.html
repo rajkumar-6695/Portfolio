@@ -1,0 +1,134 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<section id="home" class="min-vh-100 d-flex align-items-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-3">{{ personal_info.name }}</h1>
+                <h2 class="h3 text-primary mb-4">I'm a {{ personal_info.title }}</h2>
+                <div class="mb-4">{{ personal_info.description|safe }}</div>
+                {% if personal_info.cv_file %}
+                <a href="{{ personal_info.cv_file.url }}" class="btn btn-primary me-3">Download CV</a>
+                {% endif %}
+                <div class="social-links d-inline-block">
+                    {% if personal_info.github %}
+                    <a href="{{ personal_info.github }}" target="_blank"><i class="fab fa-github"></i></a>
+                    {% endif %}
+                    {% if personal_info.linkedin %}
+                    <a href="{{ personal_info.linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    {% endif %}
+                    {% if personal_info.twitter %}
+                    <a href="{{ personal_info.twitter }}" target="_blank"><i class="fab fa-twitter"></i></a>
+                    {% endif %}
+                    {% if personal_info.youtube %}
+                    <a href="{{ personal_info.youtube }}" target="_blank"><i class="fab fa-youtube"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="profile-circle mx-auto">
+                    {% if personal_info.profile_image %}
+                    <img src="{{ personal_info.profile_image.url }}" alt="{{ personal_info.name }}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">About Me</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-dark p-4 rounded-3">
+                    <div class="text-center mb-4">
+                        {% if personal_info.about %}
+                            {{ personal_info.about|safe }}
+                        {% else %}
+                            {{ personal_info.description|safe }}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="skills" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Skills</h2>
+        <div class="row g-4">
+            {% for skill in skills %}
+            <div class="col-md-6 col-lg-4">
+                <div class="p-4 bg-dark rounded-3">
+                    <h3 class="h5 mb-3">{{ skill.name }}</h3>
+                    <div class="progress" style="height: 10px;">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ skill.percentage }}%"></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="certificates" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Certificates</h2>
+        <div class="row g-4">
+            {% for certificate in certificates %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card bg-dark h-100">
+                    {% if certificate.image %}
+                    <img src="{{ certificate.image.url }}" class="card-img-top" alt="{{ certificate.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h3 class="h5 card-title">{{ certificate.title }}</h3>
+                        <p class="text-muted mb-2">{{ certificate.issuing_organization }}</p>
+                        <p class="text-muted mb-3">{{ certificate.date_received|date:"F Y" }}</p>
+                        <div class="card-text">{{ certificate.description|safe }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Contact Me</h2>
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-success text-center mb-4">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <form method="post" class="bg-dark p-4 rounded-3">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control bg-darker" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control bg-darker" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control bg-darker" id="subject" name="subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea class="form-control bg-darker" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

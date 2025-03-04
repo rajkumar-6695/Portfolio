@@ -1,0 +1,38 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/css/login.css' %}">{% endblock %}
+
+{% block bodyclass %}register-page{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <form method="post" id="register-form">
+        {% csrf_token %}
+        <div class="form-row">
+            {{ form.username.errors }}
+            <label for="id_username" class="required">{% translate 'Username:' %}</label>
+            {{ form.username }}
+        </div>
+        <div class="form-row">
+            {{ form.email.errors }}
+            <label for="id_email" class="required">{% translate 'Email:' %}</label>
+            {{ form.email }}
+        </div>
+        <div class="form-row">
+            {{ form.password1.errors }}
+            <label for="id_password1" class="required">{% translate 'Password:' %}</label>
+            {{ form.password1 }}
+        </div>
+        <div class="form-row">
+            {{ form.password2.errors }}
+            <label for="id_password2" class="required">{% translate 'Password confirmation:' %}</label>
+            {{ form.password2 }}
+        </div>
+        <div class="submit-row">
+            <input type="submit" value="{% translate 'Register' %}">
+        </div>
+        <p class="login-link">{% translate 'Already have an account?' %} <a href="{% url 'admin:login' %}">{% translate 'Login here' %}</a></p>
+    </form>
+</div>
+{% endblock %}
